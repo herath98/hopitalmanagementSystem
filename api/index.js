@@ -1,12 +1,13 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import userRoutes from './routes/user.route.js';
 
 dotenv.config();
 const app =express();
 
 app.listen(3000,()=> {
-    console.log("Server is running om port 3000")
+    console.log("Server is running om port 3000");
 });
 
 mongoose.connect(process.env.MONGO)
@@ -16,3 +17,5 @@ mongoose.connect(process.env.MONGO)
 .catch((err) => {
     console.log(err);
 });
+
+app.use('/api/user', userRoutes);
