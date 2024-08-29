@@ -1,28 +1,33 @@
 import User from "../model/user.model.js";
-import bcryptjs from 'bcryptjs'
+import bcrypt from 'bcryptjs';
+import { errorHandler } from "../utils/error.js";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
 
+    // Check for empty fields and return a 400 error if any are empty
     if (!username || !email || !password || username === '' || email === '' || password === '') {
-        return res.status(400).json({ message: 'all field required' });
-
+        return next(errorHandler(400, 'Please fill in all fields'));
     }
 
-    const hashedPassword =bcryptjs.hashSync(password,10);
-    const newUser = new User({
-           username,
-           email,
-           password:hashedPassword,
-       });
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create a new user instance
+    const newUser = new User({
+        username,
+        email,
+        // Store the hashed password
+        password: hashedPassword,
+    });
     try {
+        // Save the user to the database
         await newUser.save();
-        res.json('signup successfuly!!')
+
+        // Send a success response
+        res.status(201).json({ message: 'Signup successful!' });
     }
     catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
-
-
 };
