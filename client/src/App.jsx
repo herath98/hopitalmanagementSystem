@@ -5,7 +5,7 @@ import './App.css'
 import SignUp from './pages/SignUp'
 import SingIn from './pages/SingIn'
 import Project from './pages/Project'
-import PasswordResetWindow from './components/PasswordResetWindow '
+import PasswordResetWindow from './components/ResetPassowrd'
 import ResetPassowrd from './components/ResetPassowrd'
 import AppointmentPage from './pages/AppoimentSchedule'
 import PatientList from './pages/PatientList'
@@ -31,61 +31,45 @@ import PharmaciyDashboard from './pages/PharmacityDashboerd'
 import PharmacyDrug from './pages/PharmacyDrug'
 
 function App() {
-
-
   return (
     <BrowserRouter>
-
-      {/* Logging Route */}
       <Routes>
-
+        {/* Logging Routes */}
         <Route path='/' element={<SingIn />} />
         <Route path='reset-password' element={<PasswordResetWindow />} />
         <Route path='resetPassword' element={<ResetPassowrd />} />
-        <Route path='signup' element={<SignUp/>}/>
+        <Route path='signup' element={<SignUp />} />
 
-      </Routes>
-
-      {/* Admin dashboard */}
-        {/* patient */}
-      <Routes>
-        <Route path='apoimentp' element={<AppointmentPage />} /> {/* add appointment */}
+        {/* Admin dashboard */}
+        {/* Patient Routes */}
+        <Route path='apoimentp' element={<AppointmentPage />} /> {/* Add appointment */}
         <Route path='patientList' element={<PatientList />} />
         <Route path='singlePatient' element={<SinglePatient />} />
-      </Routes>
-        {/* Doctor */}
-      <Routes>
+
+        {/* Doctor Routes */}
         <Route path='doctorlist' element={<DoctorList />} />
         <Route path='doctorprofile' element={<DoctorProfile />} />
-      </Routes>
 
-      {/* Employee */}
-      <Routes>
+        {/* Employee Routes */}
         <Route path='employeList' element={<EmployeList />} />
         <Route path='pharmaciyProfile' element={<PharmacityProfile />} />
         <Route path='empUpdate' element={<EmployeeUpdate />} />
-      </Routes>
 
-      {/* Appointments */}
-      <Routes>
+        {/* Appointment Routes */}
         <Route path='appoimentList' element={<AppointmentList />} />
         <Route path='singleAppoiment' element={<SingleAppoiment />} />
         <Route path='apoimentUpdate' element={<AppoimentUpdate />} />
-      </Routes>
 
-      {/* Doctor dashboard */}
-      <Routes>
+        {/* Doctor dashboard */}
         <Route path='doctorDashboard' element={<DoctorDashboard />} />
         <Route path='doctorSingleAppoiment' element={<DoctorSingleAppoiment />} />
         <Route path='prescription' element={<Precription />} />
         <Route path='precriptionUpdate' element={<PrecriptionUpdate />} />
-      </Routes>
-      {/* Pharmacist dashboard */}
-      <Routes>
+
+        {/* Pharmacist dashboard */}
         <Route path='pharmaciydash' element={<PharmaciyDashboard />} />
         <Route path='pharmacydrug' element={<PharmacyDrug />} />
       </Routes>
-
     </BrowserRouter>
   )
 }

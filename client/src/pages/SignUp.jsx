@@ -1,9 +1,9 @@
-import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Button, Label, TextInput } from "flowbite-react";
+import { Link } from "react-router-dom";
+import Logo from '../assets/tooth.png';
 
-export default function SignUp() {
- 
+const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [errorMassage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
@@ -11,56 +11,84 @@ export default function SignUp() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value.trim(),
     });
+  };
+
+  const validatePassword = (password) => {
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasMoreThanTwoNumbers = /\d{3,}/.test(password);
+    const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    return hasUppercase && hasMoreThanTwoNumbers && hasSymbol;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Add form validation here if needed
-    
+
+    // Check if any of the fields are empty
+    if (!formData.username || !formData.email || !formData.password) {
+      setErrorMessage('Please fill in all fields');
+      return;
+    }
+
+    // Check if email and password are the same
+    if (formData.email === formData.password) {
+      setErrorMessage('Email and password cannot be the same');
+      return;
+    }
+
+    // Validate the password
+    if (!validatePassword(formData.password)) {
+      setErrorMessage('Password must contain at least one uppercase letter, more than two numbers, and at least one symbol.');
+      return;
+    }
+
     try {
+      setLoading(true);
+      setErrorMessage(null);
+
+      // Send a POST request to the signup API
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
+
       const data = await res.json();
-      if (!res.ok) {
-        throw new Error('Failed to sign up');
+
+      // Check if the signup was successful
+      if (data.success === false) {
+        return setErrorMessage(data.message);
       }
-      
-      // Redirect user to another page on successful signup
-      // Example: history.push('/login');
+
+      setLoading(false);
+
+      // Redirect to login page if signup was successful
+      if (res.ok) {
+        setSuccessMessage('Signup successful! Redirecting to login page...');
+        setTimeout(() => {
+          setSuccessMessage(null);
+         
+        }, 1000);
+        return;
+      }
     } catch (error) {
       console.error('Error:', error.message);
-      // Handle error
+      setLoading(false);
     }
   };
-  
-
   return (
-    <div className='min-h-screen mt-20'>
-      <div className="flex p-4 max-w-3xl mx-auto flex-col md:flex-row dark:bg-gray-900">
-        <div className="w-full md:w-1/2 p-4">
-          <div className="mt-12">
-            <Link to="/" className="text-5xl font-bold dark:text-white ">
-              <span className="px-2 py-1 bg-gradient-to-r from-lime-500 via-cyan-500 to-violet-800 rounded-lg text-white">Stars</span>
-              Blog
-            </Link>
-            <p className="justify-center text-sm mt-4">The sun hung low in the sky, casting long shadows across the rugged landscape. The air was crisp, and the breeze was wafting with the scent of pine and damp earth.</p>
-          </div>
+    <div className='min-h-screen min-w-screen pt-20 bg-white '>
+      <div className='grid grid-cols-1 md:grid-cols-2 '>
+        <div className='grid justify-center col-span-1 md:py-20 md:col-span-1'>
+          <div className='px-10 lg:px-20'><img src={Logo} alt="" /></div>
         </div>
-        <div className="w-full md:w-1/2 p-4">
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            {successMessage &&
-              <Alert className="mt-4" color="success">
-                {successMessage}
-              </Alert>
-            }
+        <div className='grid w-full px-5 md:px-10 lg:px-10 col-span-1 md:border-l-4 md:py-20  md:col-span-1'>
+        <header style={{ fontSize: '40px', fontWeight: '700', fontStyle: 'italic', }} className="font-open-sans text-slate-800 text-center text-4x text-weight-700">SIGNUP</header>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div className="">
               <div className="w-full">
                 <Label value="Your Username" />
@@ -80,33 +108,27 @@ export default function SignUp() {
                 <Label value="Your Password" />
                 <TextInput id="password" name="password" type="password" placeholder="password" onChange={handleChange} />
               </div>
-              <Button className="w-full mt-4" gradientDuoTone="purpleToPink" type="submit" disabled={loading}>
-                {loading ? (
-                  <>
-                    <Spinner
-                      size="sm"
-                      aria-label="Extra large spinner example"
-                    />
-                    <span className="pl-3">Loading...</span>
-                  </>
-                ) : 'Sign Up'}
+              <Button className="w-full mt-4" gradientDuoTone="purpleToPink" type="submit">
+                Sign Up
               </Button>
             </div>
           </form>
           <div>
             <p className="text-sm mt-4">Already have an account?
-              <Link to="/sign-in" className="text-blue-500">
+              <Link to="/" className="text-blue-500">
                 Sign In
               </Link>
             </p>
           </div>
-          {errorMassage &&
-            <Alert className="mt-4" color="failure">
-              {errorMassage}
-            </Alert>
-          }
         </div>
       </div>
+
+      
+     
+
+     
     </div>
   );
 };
+
+export default SignUp;
