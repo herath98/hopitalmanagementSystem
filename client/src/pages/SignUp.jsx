@@ -3,59 +3,44 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
-  // const [formData, setFormData] = useState({});
-  // const [errorMassage, setErrorMessage] = useState(null);
-  // const [successMessage, setSuccessMessage] = useState(null);
-  // const [loading, setLoading] = useState(false);
-  // const navigate = useNavigate();
+ 
+  const [formData, setFormData] = useState({});
+  const [errorMassage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [loarding, setLoading] = useState(false);
   const handleChange = (e) => {
-    // setFormData({
-    //   ...formData,
-    //   [e.target.name]: e.target.value.trim()
-    // });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // if (!formData.username || !formData.email || !formData.password) {
-    //   setErrorMessage('Please fill in all fields');
-    //   return;
-    // }
+    e.preventDefault();
     
-    // if (formData.email === formData.password) {
-    //   setErrorMessage('Email and password cannot be the same');
-    //   return;
-    // }
-
+    // Add form validation here if needed
     
-
-    // try {
-    //   setLoading(true);
-    //   const res = await fetch('/api/auth/signup', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(formData)
-    //   });
-    //   const data = await res.json();
-    //   setLoading(false);
-    //   if (res.ok) {
-    //     setSuccessMessage('Signup successful! Redirecting to login page...');
-    //     setTimeout(() => {
-    //       setSuccessMessage(null);
-    //       navigate('/sign-in');
-    //     }, 1000); 
-    //     return;
-    //   }
-
-
-     
-    // } catch (error) {
-    //   console.error('Error:', error.message);
-    //   setLoading(false);
-    // }
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error('Failed to sign up');
+      }
+      
+      // Redirect user to another page on successful signup
+      // Example: history.push('/login');
+    } catch (error) {
+      console.error('Error:', error.message);
+      // Handle error
+    }
   };
+  
 
   return (
     <div className='min-h-screen mt-20'>
@@ -124,4 +109,4 @@ export default function SignUp() {
       </div>
     </div>
   );
-}
+};

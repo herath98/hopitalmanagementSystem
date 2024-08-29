@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
+import authRoutes from './routes/auth.route.js';
 
 dotenv.config();
 const app =express();
@@ -19,6 +20,7 @@ mongoose.connect(process.env.MONGO)
 });
 
 app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use((err, req, res, next) => {
     // Set status code to the error's status or default to 500 if not provided
