@@ -6,6 +6,7 @@ import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSli
 import Oauth from '../components/OAuth.jsx';
 import Logo from '../assets/tooth.png';
 
+
 const SignIn = () => {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
@@ -97,8 +98,7 @@ const SignIn = () => {
       
      
 
-      {/* Render the PasswordResetWindow component only when isPasswordResetOpen is true */}
-      {isPasswordResetOpen && <PasswordResetWindow onClose={handleClosePasswordReset} />}
+     
     </div>
   );
 };

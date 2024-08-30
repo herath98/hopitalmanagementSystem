@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    isDoctor:{
+        type : Boolean,
+        default: false,
+    },
+    isPharmacist:{
+        type : Boolean,
+        default: false,
+    },
 }, 
 { timestamps: true }); // Enable timestamps to track creation and update times
 

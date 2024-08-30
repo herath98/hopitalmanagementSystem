@@ -29,6 +29,7 @@ import AppoimentUpdate from './pages/AppoimentUpdate'
 import EmployeeUpdate from './pages/EmployeeUpdate'
 import PharmaciyDashboard from './pages/PharmacityDashboerd'
 import PharmacyDrug from './pages/PharmacyDrug'
+import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute'
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
 
         {/* Admin dashboard */}
         {/* Patient Routes */}
+        <Route element={<OnlyAdminPrivateRoute />}>
         <Route path='apoimentp' element={<AppointmentPage />} /> {/* Add appointment */}
         <Route path='patientList' element={<PatientList />} />
         <Route path='singlePatient' element={<SinglePatient />} />
@@ -59,6 +61,7 @@ function App() {
         <Route path='appoimentList' element={<AppointmentList />} />
         <Route path='singleAppoiment' element={<SingleAppoiment />} />
         <Route path='apoimentUpdate' element={<AppoimentUpdate />} />
+        </Route>
 
         {/* Doctor dashboard */}
         <Route path='doctorDashboard' element={<DoctorDashboard />} />

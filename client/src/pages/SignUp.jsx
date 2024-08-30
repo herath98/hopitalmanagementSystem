@@ -1,13 +1,37 @@
-import React, { useState } from 'react';
-import { Button, Label, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Alert, Button, Card, Label, Spinner, TextInput } from "flowbite-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 import Logo from '../assets/tooth.png';
 
 const SignUp = () => {
+  // State hook to store form data
   const [formData, setFormData] = useState({});
-  const [errorMassage, setErrorMessage] = useState(null);
+  // State hook to store error message
+  const [errorMessage, setErrorMessage] = useState(null);
+  // State hook to store success message
   const [successMessage, setSuccessMessage] = useState(null);
-  const [loarding, setLoading] = useState(false);
+  // State hook to store loading state
+  const [loading, setLoading] = useState(false);
+  // Hook to navigate to different routes
+  const navigate = useNavigate();
+
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsTooltipVisible(true);
+  };
+  
+  
+
+  const handleMouseLeave = () => {
+    setIsTooltipVisible(false);
+  };
+
+  /**
+   * Handles form input change event
+   * @param {Event} e - The event object
+   */
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -15,6 +39,11 @@ const SignUp = () => {
     });
   };
 
+  /**
+   * Validates the password
+   * @param {string} password - The password to validate
+   * @returns {boolean} - True if the password is valid, false otherwise
+   */
   const validatePassword = (password) => {
     const hasUppercase = /[A-Z]/.test(password);
     const hasMoreThanTwoNumbers = /\d{3,}/.test(password);
@@ -23,6 +52,10 @@ const SignUp = () => {
     return hasUppercase && hasMoreThanTwoNumbers && hasSymbol;
   };
 
+  /**
+   * Handles form submission
+   * @param {Event} e - The event object
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -71,7 +104,7 @@ const SignUp = () => {
         setSuccessMessage('Signup successful! Redirecting to login page...');
         setTimeout(() => {
           setSuccessMessage(null);
-         
+          navigate('/sign-in');
         }, 1000);
         return;
       }
@@ -80,6 +113,7 @@ const SignUp = () => {
       setLoading(false);
     }
   };
+
   return (
     <div className='min-h-screen min-w-screen pt-20 bg-white '>
       <div className='grid grid-cols-1 md:grid-cols-2 '>
@@ -89,6 +123,11 @@ const SignUp = () => {
         <div className='grid w-full px-5 md:px-10 lg:px-10 col-span-1 md:border-l-4 md:py-20  md:col-span-1'>
         <header style={{ fontSize: '40px', fontWeight: '700', fontStyle: 'italic', }} className="font-open-sans text-slate-800 text-center text-4x text-weight-700">SIGNUP</header>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            {successMessage && (
+              <Alert className="mt-4" color="success">
+                {successMessage}
+              </Alert>
+            )}
             <div className="">
               <div className="w-full">
                 <Label value="Your Username" />
@@ -104,15 +143,52 @@ const SignUp = () => {
                 <Label value="Your Email" />
                 <TextInput id="email" name="email" type="email" placeholder="name@example.com" onChange={handleChange} />
               </div>
-              <div className="w-full mt-1">
+              <div className="relative w-full mt-1">
                 <Label value="Your Password" />
-                <TextInput id="password" name="password" type="password" placeholder="password" onChange={handleChange} />
+                <TextInput
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="password"
+                  onChange={handleChange}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={handleMouseEnter}
+
+                />
+                {isTooltipVisible && (
+                  <Card className="absolute z-10 w-64 md:w-72  rounded-lg shadow-lg">
+                    <div>Must have at least 6 characters</div>
+                    <div>It's better to have:</div>
+                    <ul className="list-disc ml-4">
+                      <li>Upper & lower case letters</li>
+                      <li>A symbol (#$&)</li>
+                      <li>A longer password (min. 12 chars.)</li>
+                    </ul>
+                  </Card>
+                )}
               </div>
-              <Button className="w-full mt-4" gradientDuoTone="purpleToPink" type="submit">
-                Sign Up
+              <Button className="w-full mt-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ... " type="submit" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Spinner size="sm" aria-label="Loading spinner" />
+                    <span className="pl-3">Loading...</span>
+                  </>
+                ) : 'Sign Up'}
               </Button>
             </div>
+            <OAuth />
           </form>
+          <div>
+            <p className="text-sm mt-4">
+              Already have an account? <Link to="/sign-in" className="text-blue-500">Sign In</Link>
+            </p>
+          </div>
+          {errorMessage && (
+            <Alert className="mt-4" color="failure">
+              {errorMessage}
+            </Alert>
+          )}
           <div>
             <p className="text-sm mt-4">Already have an account?
               <Link to="/" className="text-blue-500">
