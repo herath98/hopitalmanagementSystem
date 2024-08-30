@@ -36,7 +36,7 @@ app.listen(PORT, () => {
 // Use routes
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
-;
+
 
 
 
