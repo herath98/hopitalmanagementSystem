@@ -12,6 +12,7 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error, successMessage } = useSelector((state) => state.user);
+  const {currentUser} = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     setFormData({
@@ -48,6 +49,7 @@ const SignIn = () => {
 
       if (res.ok){
         dispatch(signInSuccess(data));
+        
         navigate('/');
     }
     } catch (error) {

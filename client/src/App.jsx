@@ -30,6 +30,9 @@ import EmployeeUpdate from './pages/EmployeeUpdate'
 import PharmaciyDashboard from './pages/PharmacityDashboerd'
 import PharmacyDrug from './pages/PharmacyDrug'
 import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute'
+import OnlyDoctorAndAdmin from './components/OnlyDoctorAndAdmin'
+import DashBoard from './pages/DashBoard'
+import OnlyPharmacistAndAdmin from './components/OnlyPharmacistAndAdmin'
 
 function App() {
   return (
@@ -44,6 +47,8 @@ function App() {
         {/* Admin dashboard */}
         {/* Patient Routes */}
         <Route element={<OnlyAdminPrivateRoute />}>
+        
+        <Route path='/dahsboard' element={<DashBoard/>}/>
         <Route path='apoimentp' element={<AppointmentPage />} /> {/* Add appointment */}
         <Route path='patientList' element={<PatientList />} />
         <Route path='singlePatient' element={<SinglePatient />} />
@@ -64,14 +69,24 @@ function App() {
         </Route>
 
         {/* Doctor dashboard */}
+        <Route element={<OnlyDoctorAndAdmin/>}>
+
+        <Route path='/dahsboard' element={<DashBoard/>}/>
         <Route path='doctorDashboard' element={<DoctorDashboard />} />
         <Route path='doctorSingleAppoiment' element={<DoctorSingleAppoiment />} />
         <Route path='prescription' element={<Precription />} />
         <Route path='precriptionUpdate' element={<PrecriptionUpdate />} />
 
+        </Route>
+
         {/* Pharmacist dashboard */}
+        <Route element={<OnlyPharmacistAndAdmin/>}>
+
+        <Route path='/dahsboard' element={<DashBoard/>}/>
         <Route path='pharmaciydash' element={<PharmaciyDashboard />} />
         <Route path='pharmacydrug' element={<PharmacyDrug />} />
+
+        </Route>
       </Routes>
     </BrowserRouter>
   )
