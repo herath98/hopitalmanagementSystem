@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 
-const userSchema = new mongoose.Schema({ 
+const appoimentSchema = new mongoose.Schema({ 
     firstname: {
         type:String,
         required: true,
@@ -49,5 +49,5 @@ const userSchema = new mongoose.Schema({
 {timestamps:true}
 );
 
-const Appoiment = mongoose.model('Appoiment', userSchema);
+const Appoiment = mongoose.model('Appoiment', appoimentSchema);
 export default Appoiment;

@@ -1,13 +1,13 @@
-import Appoiment from "../model/Appoiment.model";
-import { errorHandler } from "../utils/error"
+import Appoiment from "../model/Appoiment.model.js";
+import { errorHandler } from "../utils/error.js";
 
 
 
 
 
-export default createAppoiment = async (req,res,next)=>{
+export const createAppoiment = async (req,res,next)=>{
     if(!req.user.isAdmin){
-        return next(errorHandler(403,"Only Admin can Create Appoiment"));
+        return next(errorHandler(403,"Only Admin Can Create Appoiment"));
     }
     if(!req.body.firstname || !req.body.lasyname || !req.body.gender || !req.body.tnumber || !req.body.email || !req.body.nic || !req.body.address || !req.body.medinote){
         return next(errorHandler(400,"Please fill all required fields"));
