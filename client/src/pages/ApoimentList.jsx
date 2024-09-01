@@ -97,7 +97,7 @@ const patients = [
 ];
 
 
-const PatientList = () => {
+const AppoimentList = () => {
     const [isPasswordResetOpen, setIsPasswordResetOpen] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
     const [formData, setFormData] = useState({}); 
@@ -218,4 +218,4 @@ const PatientList = () => {
     );
 };
 
-export default PatientList;
+export default AppoimentList;
