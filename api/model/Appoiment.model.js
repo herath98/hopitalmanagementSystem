@@ -2,13 +2,17 @@ import mongoose from 'mongoose';
 
 
 const appoimentSchema = new mongoose.Schema({ 
+    userId:{
+        type:String,
+        required:true,
+    },
     firstname: {
         type:String,
         required: true,
        
 
     },
-    lasyname:{
+    lastname:{
         type:String,
         required: true,
     },
@@ -44,6 +48,10 @@ const appoimentSchema = new mongoose.Schema({
     slug:{
         type:String,
         required:true,
+    },
+    birthday: {
+        type: Date,
+        required: true,
     },
 },
 {timestamps:true}

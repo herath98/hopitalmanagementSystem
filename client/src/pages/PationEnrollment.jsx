@@ -2,32 +2,46 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { Button, TextInput, Label, Textarea, Select, Datepicker } from "flowbite-react";
 import Delete from '../assets/delete.png';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 function PatientEnrollmentForm({ onClose }) {
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        gender: '',
-        birthday: '',
-        email: '',
-        contactNumber: '',
-        nic: '',
-        address: '',
-        medicalNotes: '',
-    });
+    const [formData, setFormData] = useState({});
+    const [publishError, setPublishError] = useState(null);
+    
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const handleChange = (event) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value,
-        });
-    };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(formData);
-        // Submit the form data to your backend here
-        onClose(); // Close the modal
+    
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        try {
+            const res= await fetch('/api/appoiment/create',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                },
+                body:JSON.stringify(formData),
+            });
+            const data=await res.json();
+            if(!res.ok){
+                setPublishError(data.message);
+                return;
+            }
+            if(res.ok){
+                dispatch({type:'CREATE_APPOIMENT',payload:data});
+                setPublishError(null);
+                navigate('/appoiment');
+            }
+
+        } catch (error) {
+            setPublishError(error.message);
+            
+        }
+       
+        onClose(); 
     };
 
     return (
@@ -65,12 +79,11 @@ function PatientEnrollmentForm({ onClose }) {
                                 <div className='w-full grid col-span-1 '>
 
                                     <TextInput
-                                        id="firstName"
+                                        id="firstname"
                                         name="firstName"
                                         placeholder='First name'
                                         type="text"
-                                        onChange={handleChange}
-                                        value={formData.firstName}
+                                        onChange={(e)=>setFormData({...formData,firstname: e.target.value})}
                                         required
                                         className="col-span-1 px-4 py-2"
                                         style={{ borderRadius: '15px' }}
@@ -79,12 +92,11 @@ function PatientEnrollmentForm({ onClose }) {
                                 <div>
 
                                     <TextInput
-                                        id="lastName"
+                                        id="lastname"
                                         name="lastName"
                                         placeholder='Last name'
                                         type="text"
-                                        onChange={handleChange}
-                                        value={formData.lastName}
+                                        onChange={(e)=>setFormData({...formData,lastname: e.target.value})}
                                         required
                                         className="col-span-1  px-4 py-2"
                                         style={{ borderRadius: '15px' }}
@@ -95,14 +107,13 @@ function PatientEnrollmentForm({ onClose }) {
                                     <Select
                                         id="gender"
                                         name="gender"
-                                        onChange={handleChange}
-                                        value={formData.gender}
+                                        onChange={(e)=>setFormData({...formData,gender: e.target.value})}
                                         required
                                         className="col-span-1 px-4 py-2 text-slate-800"
                                         style={{ borderRadius: '15px' }}
 
                                     >
-                                        <option  value="">Gender</option>
+                                        <option  value="notfill">Gender</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="other">Other</option>
@@ -115,8 +126,7 @@ function PatientEnrollmentForm({ onClose }) {
                                         name="birthday"
                                         placeholder='Birthday'
                                         type="text"
-                                        onChange={handleChange}
-                                        value={formData.birthday}
+                                        onChange={(e)=>setFormData({...formData, birthday: e.target.value})}
                                         required
                                         className="col-span-1 px-4 py-2"
                                         style={{ borderRadius: '15px' }}
@@ -129,8 +139,7 @@ function PatientEnrollmentForm({ onClose }) {
                                         name="email"
                                         placeholder='Email'
                                         type="email"
-                                        onChange={handleChange}
-                                        value={formData.email}
+                                        onChange={(e)=>setFormData({...formData, email: e.target.value})}
                                         required
                                         className="col-span-1 px-4 py-2"
                                         style={{ borderRadius: '15px' }}
@@ -139,12 +148,11 @@ function PatientEnrollmentForm({ onClose }) {
                                 <div>
 
                                     <TextInput
-                                        id="contactNumber"
+                                        id="tnumber"
                                         name="contactNumber"
                                         placeholder='Contact Number'
                                         type="tel"
-                                        onChange={handleChange}
-                                        value={formData.contactNumber}
+                                        onChange={(e)=>setFormData({...formData, tnumber: e.target.value})}
                                         required
                                         className="col-span-1 px-4 py-2"
                                         style={{ borderRadius: '15px' }}
@@ -157,8 +165,7 @@ function PatientEnrollmentForm({ onClose }) {
                                         name="nic"
                                         placeholder=' NIC'
                                         type="text"
-                                        onChange={handleChange}
-                                        value={formData.nic}
+                                        onChange={(e)=>setFormData({...formData, nic: e.target.value})}
                                         required
                                         className="col-span-1 px-4 py-2"
                                         style={{ borderRadius: '15px' }}
@@ -171,8 +178,7 @@ function PatientEnrollmentForm({ onClose }) {
                                         name="address"
                                         placeholder='Address'
                                         type="text"
-                                        onChange={handleChange}
-                                        value={formData.address}
+                                        onChange={(e)=>setFormData({...formData,  address: e.target.value})}
                                         required
                                         className="col-span-1 px-4 py-2"
                                         style={{ borderRadius: '15px' }}
@@ -187,10 +193,10 @@ function PatientEnrollmentForm({ onClose }) {
 
                                 <Textarea
                                     id="medicalNotes"
-                                    name="medicalNotes"
-                                    onChange={handleChange}
+                                    name="medinote"
+                                    onChange={(e)=>setFormData({...formData, medinote: e.target.value})}
                                     placeholder=' Medical Notes'
-                                    value={formData.medicalNotes}
+                                    
                                     className="col-span-2 px-2 md:px-5 py-2 h-10"
                                     style={{ borderRadius: '15px', height: '100px' }}
                                 />
