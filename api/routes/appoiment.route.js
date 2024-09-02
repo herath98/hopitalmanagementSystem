@@ -1,5 +1,5 @@
 import express from 'express';
-import {createAppoiment, getAppoiment} from '../controllers/appoiment.controller.js';
+import {createAppoiment, getAppoiment, getUpdate} from '../controllers/appoiment.controller.js';
 import { verifyToken } from '../utils/verifyUser.js';
 
 const router=express.Router();
