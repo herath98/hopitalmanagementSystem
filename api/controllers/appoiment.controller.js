@@ -104,3 +104,32 @@ catch(error){
 }
 
 }
+
+export const getUpdate = async (res,req,next)=>{
+    if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+        return next(errorHandler(403, 'You are not allowed to update this post'));
+      }
+      try{
+        const getUpdatePatient =await Appoiment.findByIdAndUpdate(req.params.apoimentId, 
+             { 
+                $set: {
+                    firstnames:req.body.firstnames,
+                    lastnames:req.body.lastnames,
+                    gender:req.body.gender,
+                    tnumber:req.body.tnumber,
+                    email:req.body.email,
+                    nic:req.body.nic,
+                    address:req.body.address,
+                    medinote:req.body.medinote,
+                    slug:req.body.slug,
+                    birthday:req.body.birthday
+                },
+            },
+                {new:true}
+              );
+             res.status(200).json(getUpdatePatient); 
+      }
+      catch(error){
+        next(error);
+      }
+}

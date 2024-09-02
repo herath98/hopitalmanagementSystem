@@ -15,6 +15,7 @@ const PatientList = () => {
     const [patient, setPatient] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [showMore, setShowMore] = useState(true);
+    const [modelClose, setModelClose]=useState(false);
     
     
     useEffect(() => {
@@ -56,6 +57,13 @@ const PatientList = () => {
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
     };
+    
+    const OpenModel =()=>{
+        setModelClose(true);
+    }
+    const Modelclose=()=>{
+        setModelClose(false);
+    }
 
     return (
         <div className="bg-white">
@@ -88,28 +96,28 @@ const PatientList = () => {
                 <div className="flex font-open-sans text-xl text-black font-semibold justify-start pl-5 ml-8 mb-2 pt-2">PATIENTS</div>
                 <div style={{ borderRadius: '25px' }} className="mx-10 px-4 lg:px-10 pt-10 bg-blue-100 border-radius-2xl">
                     <div className="flex justify-between mb-4">
-                        <div onClick={handleSearch} className="w-1/2 mx-auto flex justify-start">
-                            <TextInput className='w-1/2' placeholder="Search" />
+                        <div onClick={handleSearch} className="w-1/2 mx-auto py-1 flex justify-start">
+                            <input className='w-1/2 bg-white px-2 rounded-xl py-1 text-gray-700' placeholder="Search" />
                         </div>
                         <div className="w-1/2 mx-auto mt-5 flex justify-end">
-                            <button className="bg-blue-700 rounded text-white px-5 py-2 hover:bg-blue-700 float-right" >ADD PATIENT</button>
+                            <button className="bg-blue-700 rounded text-white px-5 py-2 hover:bg-blue-700 float-right" onClick={ OpenModel} >ADD PATIENT</button>
                         </div>
                     </div>
                     <div className="flex pb-5 overflow-x-auto mt-4 bg-blue-100">
                         {currentUser.isAdmin && patient.length > 0 ? (
                             <Table className="w-full flowbite-table">
                                 <Table.Head className="bg-blue-200">
-                                    <Table.HeadCell className="w-1/6 bg-blue-100 pl-4">#</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/6 bg-blue-100 pl-4">Patient name</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/4 bg-blue-100">Email</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/6 bg-blue-100">Contact no</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/6 bg-blue-100">NIC</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/4 bg-blue-100">Address</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/6 bg-blue-100">Age</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/6 bg-blue-100">Sex</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/6 bg-blue-100 text-blue-100">Icon 2</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/6 bg-blue-100 text-blue-100">Icon 2</Table.HeadCell>
-                                    <Table.HeadCell className="w-1/6 bg-blue-100 text-blue-100">Icon 3</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100 pl-4">#</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100 pl-4">Patient name</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100">Email</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100">Contact no</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100">NIC</Table.HeadCell>
+                                    <Table.HeadCell className="bg-blue-100">Address</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100">Age</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100">Sex</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100 text-blue-100">Icon 2</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100 text-blue-100">Icon 2</Table.HeadCell>
+                                    <Table.HeadCell className=" bg-blue-100 text-blue-100">Icon 3</Table.HeadCell>
                                 </Table.Head>
                                 <Table.Body>
                                     {patient.map((patient, index) => {
@@ -146,7 +154,7 @@ const PatientList = () => {
                     </div>
                 </div>
             </div>
-            
+            {modelClose && <PatientEnrollmentForm onClose={Modelclose} />}
         </div>
     );
 };

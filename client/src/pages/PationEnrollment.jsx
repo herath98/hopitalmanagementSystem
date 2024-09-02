@@ -50,9 +50,9 @@ function PatientEnrollmentForm({ onClose }) {
 
     return (
         <Modal
-            isOpen={true} // Always open
+            isOpen={true} 
             onRequestClose={onClose}
-            ariaHideApp={false} // Disable aria-hide-app warning in development
+            ariaHideApp={false} 
             style={{
                 overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay

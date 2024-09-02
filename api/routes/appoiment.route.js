@@ -6,5 +6,6 @@ const router=express.Router();
 
 router.post('/create',verifyToken,createAppoiment);
 router.get('/getappoiment',getAppoiment);
+router.put('/update',verifyToken,getUpdate);
 
 export default router;
