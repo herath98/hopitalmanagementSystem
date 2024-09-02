@@ -33,7 +33,7 @@ export const getAppoiment = async(req,res,next)=>{
     const limit =parseInt(req.query.limit) || 9;
     const sortDirection =req.query.order === 'asc' ? 1 :-1;
 
-    const query {};
+    const query ={};
 
     if(req.query.userId){
         query.userId=req.query.userId;
@@ -71,7 +71,7 @@ export const getAppoiment = async(req,res,next)=>{
     if(req.query.appoimentId){
         query._id = req.query.appoimentId;
     }
-    if(req.qurty.searchTerm){
+    if(req.query.searchTerm){
         query.$or =[
             {firstnames:{$regex:req.query.searchTerm,$options:'i'}},
             {lastnames:{$regex:req.query.searchTerm,$options:'i'}},
